@@ -1,5 +1,14 @@
 grammar progLang;
 
+progLang : (expr NEWLINE)*
+    ;
+
+expr:   expr ('*'|'/') expr
+    |   expr ('+'|'-') expr
+    |   INT
+    |   '(' expr ')'
+    ;
+
 ID  :	('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'0'..'9'|'_')*
     ;
 
@@ -16,7 +25,7 @@ WS  :   ( ' '
         | '\t'
         | '\r'
         | '\n'
-        ) {$channel=HIDDEN;}
+        )+ -> skip
     ;
 
 STRING
@@ -25,6 +34,8 @@ STRING
 
 CHAR:  '\'' ( ESC_SEQ | ~('\''|'\\') ) '\''
     ;
+
+NEWLINE : [\r\n]+ ;
 
 fragment
 EXPONENT : ('e'|'E') ('+'|'-')? ('0'..'9')+ ;
