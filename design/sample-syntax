@@ -1,0 +1,74 @@
+///// HELLO WORLD ////
+
+module Main {
+    main :: () -> ()
+    main () {
+        println("Hello World");
+    }
+}
+
+
+
+///// MAPS /////
+
+module M {
+    interface I {
+        f1 :: Int -> Int
+    }
+
+    p1 :: a => I:  a -> Int -> Int
+    p1 (i, v) {
+        return i.f1(a);
+    }
+
+    main :: () -> ()
+    main() {
+        // Explicit variable declaration
+        var p = {
+            s1: 1, s2: 2
+        }
+
+        // Implicit variable declaration
+        q := {
+            q1: \v -> return p.f1(v)
+        }
+
+        p implements I by {
+            f1 = \v -> return s1 + s2 + v
+        }
+
+        q implements I by {
+            f1 = q1
+        }
+
+        callP := p1(p, 3);
+        callQ := p1(q, 4);
+        result := callP + callQ;
+        print(result);
+    }
+}
+
+// Then callP evaluates to 6  (e.g. 1 + 2 + 3)
+//      callQ evaluates to 7  (e.q. p.f1(4) \reducesto 1 + 2 + 4)
+
+//// MONADS ////
+
+module WantingHaskellOnTheJVM {
+    interface Monad m {
+        create   :: a -> m a
+        bind     :: m a -> (a -> m b) -> m b
+        sequence :: m a -> m b -> m b
+    }
+
+    // Borrowing Haskell syntax, well, because
+    data Maybe a = Just a | Nothing
+
+    Maybe implements Monad by {
+        create  = (\x -> Just)
+        // Thinking about pattern matching, without good syntax
+        bind(Just x, k) = k x
+        bind(Nothing, _) = Nothing
+        sequence(_, k) = k
+    }
+}
+
