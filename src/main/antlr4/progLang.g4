@@ -1,12 +1,39 @@
 grammar progLang;
 
-progLang : (expr NEWLINE)*
+@header {
+package progLang.antlr4;
+}
+
+progLang : (compilationUnit)*
     ;
 
-expr:   expr ('*'|'/') expr
-    |   expr ('+'|'-') expr
+typedId : ID '::' ID
+	;
+
+compilationUnit : expr
+	;
+
+expr :   arithExpr
+	|	objLit
+	;
+
+// Object Literals
+objLit : '{' objLitMembers '}'
+	;
+
+objLitMembers : objLitMember
+	| objLitMember ',' objLitMembers
+	;
+
+objLitMember : objLitId ':' expr
+	;
+
+objLitId: ID | typedId;
+
+arithExpr : arithExpr ('*'|'/') arithExpr
+    |   arithExpr ('+'|'-') arithExpr
     |   INT
-    |   '(' expr ')'
+    |   '(' arithExpr ')'
     ;
 
 ID  :	('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'0'..'9'|'_')*
@@ -35,7 +62,7 @@ STRING
 CHAR:  '\'' ( ESC_SEQ | ~('\''|'\\') ) '\''
     ;
 
-NEWLINE : [\r\n]+ ;
+NEWLINE : [\n|\r\n]+ ;
 
 fragment
 EXPONENT : ('e'|'E') ('+'|'-')? ('0'..'9')+ ;
