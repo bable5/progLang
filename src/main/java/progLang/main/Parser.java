@@ -5,9 +5,9 @@ import java.io.IOException;
 import org.antlr.v4.runtime.ANTLRFileStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 
-import progLang.antlr4.progLangLexer;
-import progLang.antlr4.progLangParser;
-import progLang.antlr4.progLangParser.ProgLangContext;
+import progLang.progLangLexer;
+import progLang.progLangParser;
+import progLang.progLangParser.ProgLangContext;
 import progLang.util.Context;
 
 public class Parser {

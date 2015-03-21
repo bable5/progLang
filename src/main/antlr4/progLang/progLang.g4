@@ -1,9 +1,5 @@
 grammar progLang;
 
-@header {
-package progLang.antlr4;
-}
-
 progLang : (compilationUnit)*
     ;
 
