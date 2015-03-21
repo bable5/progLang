@@ -4,25 +4,25 @@ progLang : (compilationUnit)*
     ;
 
 typedId : ID '::' ID
-	;
+    ;
 
 compilationUnit : expr
-	;
+    ;
 
 expr :   arithExpr
-	|	objLit
-	;
+    |    objLit
+    ;
 
 // Object Literals
 objLit : '{' objLitMembers '}'
-	;
+    ;
 
 objLitMembers : objLitMember
-	| objLitMember ',' objLitMembers
-	;
+    | objLitMember ',' objLitMembers
+    ;
 
 objLitMember : objLitId ':' expr
-	;
+    ;
 
 objLitId: ID | typedId;
 
@@ -32,10 +32,10 @@ arithExpr : arithExpr ('*'|'/') arithExpr
     |   '(' arithExpr ')'
     ;
 
-ID  :	('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'0'..'9'|'_')*
+ID  :    ('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'0'..'9'|'_')*
     ;
 
-INT :	'0'..'9'+
+INT :    '0'..'9'+
     ;
 
 FLOAT
