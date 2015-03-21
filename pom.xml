@@ -9,7 +9,7 @@
   <name>progLang</name>
   <url>https://github.com/cgideon/progLang</url>
   <properties>
-    <antlr.version>4.3</antlr.version>
+    <antlr.version>4.5</antlr.version>
   </properties>
   <dependencies>
     <dependency>
