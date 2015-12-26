@@ -17,12 +17,12 @@ $> mvn package
 Run the jar:
 
 ```bash
-$> java -cp target/progLang-[VERSION]-jar-with-dependencies.jar [SOURCE-FILE]
+$> java -cp target/progLang-[VERSION]-jar-with-dependencies.jar progLang.Main [SOURCE-FILE]
 ```
 
 e.g.
 
 ```bash
-$> java -cp target/progLang-1.0-SNAPSHOT-jar-with-dependencies.jar src/main/examples/ObjectLiteral.progLang
+$> java -cp target/progLang-1.0-SNAPSHOT-jar-with-dependencies.jar progLang.Main src/main/examples/ObjectLiteral.progLang
 ```
 
