@@ -6,10 +6,20 @@ progLang : (compilationUnit)*
 typedId : ID '::' ID
     ;
 
-compilationUnit : expr
+compilationUnit : (stmt)+
+    ;
+
+stmt: expr STMT_END
+    ;
+
+varDecl: explicitVarDecl
+    ;
+
+explicitVarDecl: VAR ID EXPR_ASSGN expr
     ;
 
 expr :   arithExpr
+    |    explicitVarDecl
     |    objLit
     ;
 
@@ -31,6 +41,15 @@ arithExpr : arithExpr ('*'|'/') arithExpr
     |   INT
     |   '(' arithExpr ')'
     ;
+
+
+/* KEYWORDS */
+VAR : 'var' ;
+
+/* OPERATORS */
+EXPR_ASSGN : '='
+    ;
+
 
 ID  :    ('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'0'..'9'|'_')*
     ;
@@ -56,6 +75,9 @@ STRING
     ;
 
 CHAR:  '\'' ( ESC_SEQ | ~('\''|'\\') ) '\''
+    ;
+
+STMT_END : ';'
     ;
 
 NEWLINE : [\n|\r\n]+ ;

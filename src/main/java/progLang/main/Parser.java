@@ -26,8 +26,7 @@ public class Parser {
         progLangParser parser = new progLangParser(tokens);
 
         ProgLangContext progLangCtx = parser.progLang();
-        
-               
+
         System.out.println(progLangCtx.getText());
     }
 }
