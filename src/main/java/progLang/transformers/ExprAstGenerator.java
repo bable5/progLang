@@ -12,14 +12,10 @@ public class ExprAstGenerator extends progLangBaseVisitor<Expr> {
     public static ExprAstGenerator instance(Context context) {
         ExprAstGenerator visitor = context.get(ExprAstGenerator.class);
         if (visitor == null) {
-            visitor = new ExprAstGenerator(context);
+            visitor = new ExprAstGenerator();
             context.put(ExprAstGenerator.class, visitor);
         }
         return visitor;
-    }
-
-    protected ExprAstGenerator(Context context) {
-        super();
     }
 
     @Override

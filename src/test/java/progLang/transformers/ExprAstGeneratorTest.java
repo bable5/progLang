@@ -19,7 +19,7 @@ public class ExprAstGeneratorTest extends AbstractProgLangTest {
 
     @Override
     public void postSetup() {
-        visitor = new ExprAstGenerator(context);
+        visitor = new ExprAstGenerator();
     }
 
     @Test
