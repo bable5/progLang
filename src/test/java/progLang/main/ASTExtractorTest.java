@@ -1,39 +1,37 @@
 package progLang.main;
 
 import org.junit.Test;
-import org.mockito.Mock;
 import progLang.ast.CompilationUnit;
+import progLang.ast.Literal;
 import progLang.progLangParser;
 import progLang.testUtils.AbstractProgLangTest;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.mockito.Mockito.when;
+import static org.hamcrest.Matchers.hasSize;
+import static org.junit.Assert.fail;
 
 
-public class ASTExtractorTest extends AbstractProgLangTest{
+public class ASTExtractorTest extends AbstractProgLangTest {
 
     private ASTExtractor extractor;
 
-    @Mock
-    private progLangParser.ProgLangContext parserContext;
 
     protected void postSetup() {
-
-
         extractor = ASTExtractor.instance(context);
     }
 
     @Test
     public void extractCompilationUnit() {
-        final List<CompilationUnit> expectedUnits = new ArrayList<>();
-//        when(compilationUnitsExtractor).thenReturn(exptectedUnits);
+        progLangParser.ProgLangContext progLangContext = givenCompilationUnit("1;");
 
-        CompilationUnit units = extractor.extract(parserContext);
+        CompilationUnit unit = extractor.extract(progLangContext);
 
-        assertThat(units, is(expectedUnits));
+        assertThat(unit.stmts, hasSize(1));
+        assertThat(unit.stmts.get(0).expr, is(new Literal(1)));
+    }
+
+    private progLangParser.ProgLangContext givenCompilationUnit(String programText) {
+        return givenParser(programText).progLang();
     }
 }

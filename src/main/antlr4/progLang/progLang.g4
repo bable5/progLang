@@ -19,7 +19,7 @@ explicitVarDecl: VAR ID EXPR_ASSGN expr
     ;
 
 expr : arithExpr
-     |    explicitVarDecl
+     | explicitVarDecl
      | objLit
      | lambdaExpr
      ;
@@ -48,8 +48,8 @@ formalParameterList : formalParameter
 formalParameter : ID | typedId
                 ;
 
-arithExpr : arithExpr ('*'|'/') arithExpr   # MultExpr
-    |   arithExpr ('+'|'-') arithExpr       # AddExpr
+arithExpr : arithExpr (ARITH_MULT|ARITH_DIV) arithExpr   # MultExpr
+    |   arithExpr (ARITH_ADD|ARITH_MINUS) arithExpr       # AddExpr
     |   INT                                 # NumberLiteral
     |   '(' arithExpr ')'                   # NestArithExpr
     ;
@@ -59,8 +59,11 @@ arithExpr : arithExpr ('*'|'/') arithExpr   # MultExpr
 VAR : 'var' ;
 
 /* OPERATORS */
-EXPR_ASSGN : '='
-    ;
+EXPR_ASSGN  : '=';
+ARITH_ADD   : '+';
+ARITH_MINUS : '-';
+ARITH_MULT  : '*';
+ARITH_DIV   : '/';
 
 
 ID  :    ('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'0'..'9'|'_')*

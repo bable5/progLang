@@ -1,5 +1,7 @@
 package progLang.ast;
 
+import java.util.List;
+
 public class CompilationUnit {
-    public Expr expr;
+    public List<Stmt> stmts;
 }

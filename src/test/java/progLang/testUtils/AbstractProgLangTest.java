@@ -1,10 +1,16 @@
 package progLang.testUtils;
 
+import org.antlr.v4.runtime.ANTLRInputStream;
+import org.antlr.v4.runtime.CommonTokenStream;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
+import progLang.progLangLexer;
+import progLang.progLangParser;
 import progLang.util.Context;
+
+import static org.junit.Assert.fail;
 
 @RunWith(MockitoJUnitRunner.class)
 public abstract class AbstractProgLangTest {
@@ -28,5 +34,12 @@ public abstract class AbstractProgLangTest {
 
     protected void preTearDown() {
 
+    }
+
+    protected progLangParser givenParser(String programText) {
+        progLangLexer lexer = new progLangLexer(new ANTLRInputStream(programText));
+        progLangParser parser = new progLangParser(new CommonTokenStream(lexer));
+
+        return parser;
     }
 }
