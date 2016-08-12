@@ -16,11 +16,12 @@ import org.mockito.runners.MockitoJUnitRunner;
 import progLang.main.Options;
 import progLang.main.ProgLangCompiler;
 import progLang.main.ProgLangCompiler.Result;
+import progLang.testUtils.AbstractProgLangTest;
 import progLang.util.Context;
 import progLang.util.Log;
 
 @RunWith(MockitoJUnitRunner.class)
-public class MainTest {
+public class MainTest extends AbstractProgLangTest{
 
     @Mock
     private ProgLangCompiler compiler;
@@ -30,21 +31,12 @@ public class MainTest {
 
     private Main main;
 
-    private Context context;
-
-    @Before
-    public void setup() {
-        context = new Context();
+    public void postSetup() {
         context.put(Log.class, log);
         context.put(ProgLangCompiler.class, compiler);
         compiler = ProgLangCompiler.instance(context);
 
         main = new Main(context);
-    }
-
-    @After
-    public void teardown() {
-        context = null;
     }
 
     @Test

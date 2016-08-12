@@ -18,10 +18,11 @@ varDecl: explicitVarDecl
 explicitVarDecl: VAR ID EXPR_ASSGN expr
     ;
 
-expr :   arithExpr
-    |    explicitVarDecl
-    |    objLit
-    ;
+expr : arithExpr
+     |    explicitVarDecl
+     | objLit
+     | lambdaExpr
+     ;
 
 // Object Literals
 objLit : '{' objLitMembers '}'
@@ -34,12 +35,23 @@ objLitMembers : objLitMember
 objLitMember : objLitId ':' expr
     ;
 
-objLitId: ID | typedId;
+objLitId : ID | typedId;
 
-arithExpr : arithExpr ('*'|'/') arithExpr
-    |   arithExpr ('+'|'-') arithExpr
-    |   INT
-    |   '(' arithExpr ')'
+// lambda expressions
+lambdaExpr : formalParameterList '->' expr
+    ;
+
+formalParameterList : formalParameter
+                    | formalParameter ',' formalParameterList
+                    ;
+
+formalParameter : ID | typedId
+                ;
+
+arithExpr : arithExpr ('*'|'/') arithExpr   # MultExpr
+    |   arithExpr ('+'|'-') arithExpr       # AddExpr
+    |   INT                                 # NumberLiteral
+    |   '(' arithExpr ')'                   # NestArithExpr
     ;
 
 

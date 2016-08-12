@@ -3,6 +3,7 @@ package progLang.main;
 import java.io.IOException;
 
 import org.antlr.v4.runtime.ANTLRFileStream;
+import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 
 import progLang.progLangLexer;
@@ -20,13 +21,14 @@ public class Parser {
         return parser;
     }
 
-    public void parse(String filename) throws IOException {
-        progLangLexer lexer = new progLangLexer(new ANTLRFileStream(filename));
-        CommonTokenStream tokens = new CommonTokenStream(lexer);
-        progLangParser parser = new progLangParser(tokens);
+    public ProgLangContext parse(String filename) throws IOException {
+        return parse(new ANTLRFileStream(filename));
+    }
 
-        ProgLangContext progLangCtx = parser.progLang();
+    public ProgLangContext parse(CharStream input) throws IOException {
+        progLangLexer lexer = new progLangLexer(input);
+        progLangParser parser = new progLangParser(new CommonTokenStream(lexer));
 
-        System.out.println(progLangCtx.getText());
+        return parser.progLang();
     }
 }
