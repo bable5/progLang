@@ -3,7 +3,18 @@ package progLang.ast;
 import java.util.Objects;
 
 public class Symbol {
-    public String name;
+    public final String name;
+
+    public Symbol(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return "Symbol{" +
+                "name='" + name + '\'' +
+                '}';
+    }
 
     @Override
     public boolean equals(Object o) {

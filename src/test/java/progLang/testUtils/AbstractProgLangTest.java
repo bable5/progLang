@@ -10,8 +10,6 @@ import progLang.progLangLexer;
 import progLang.progLangParser;
 import progLang.util.Context;
 
-import static org.junit.Assert.fail;
-
 @RunWith(MockitoJUnitRunner.class)
 public abstract class AbstractProgLangTest {
 
@@ -23,7 +21,7 @@ public abstract class AbstractProgLangTest {
         postSetup();
     }
     @After
-    public void teardown() {
+    public final void teardown() {
         preTearDown();
         context = null;
     }

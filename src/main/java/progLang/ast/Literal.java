@@ -6,7 +6,18 @@ public class Literal extends Expr {
     public final int value;
 
     public Literal(int value) {
+        super(null);
         this.value = value;
+    }
+
+    public Literal(int value, Symbol type) {
+        super(type);
+        this.value = value;
+    }
+
+    @Override
+    public <R, P> R accept(AstVisitor<R, P> visitor, P p) {
+        return visitor.visitLiteral(this, p);
     }
 
     @Override

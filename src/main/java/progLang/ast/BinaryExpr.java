@@ -1,5 +1,7 @@
 package progLang.ast;
 
+import progLang.type.Type;
+
 import java.util.Objects;
 
 public class BinaryExpr extends Expr {
@@ -8,9 +10,20 @@ public class BinaryExpr extends Expr {
     public final Expr rhs;
 
     public BinaryExpr(Operator operator, Expr lhs, Expr rhs) {
+        this(operator, lhs, rhs, null);
+    }
+
+    public BinaryExpr(Operator operator, Expr lhs, Expr rhs, Symbol type) {
+        super(type);
         this.operator = operator;
         this.lhs = lhs;
         this.rhs = rhs;
+    }
+
+
+    @Override
+    public <R, P> R accept(AstVisitor<R, P> vistor, P p) {
+        return vistor.visitBinaryExpr(this, p);
     }
 
     @Override
