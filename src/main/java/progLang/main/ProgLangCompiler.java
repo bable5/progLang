@@ -25,7 +25,7 @@ public class ProgLangCompiler {
     private final ASTExtractor astExtractor;
     private final Type typer;
 
-    protected ProgLangCompiler(Context context) {
+    private ProgLangCompiler(Context context) {
         log = Log.instance(context);
         parser = Parser.instance(context);
         astExtractor = ASTExtractor.instance(context);
@@ -48,7 +48,7 @@ public class ProgLangCompiler {
         return Result.OK;
     }
 
-    protected Optional<progLangParser.ProgLangContext> parse(File f) {
+    private Optional<progLangParser.ProgLangContext> parse(File f) {
         try {
             return Optional.of(parser.parse(f.getAbsolutePath()));
         } catch (IOException e) {
@@ -57,15 +57,14 @@ public class ProgLangCompiler {
         }
     }
 
-    protected CompilationUnit extract(progLangParser.ProgLangContext context) {
+    private CompilationUnit extract(progLangParser.ProgLangContext context) {
         return astExtractor.extract(context);
     }
 
     protected CompilationUnit type(CompilationUnit compilationUnit) {
         CompilationUnit check = typer.check(compilationUnit);
 
-        check.stmts.stream()
-                .forEach(s -> System.out.println(s));
+        check.stmts.forEach(System.out::println);
         return check;
     }
 
