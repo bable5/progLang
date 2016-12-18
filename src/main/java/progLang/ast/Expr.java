@@ -8,7 +8,7 @@ public abstract class Expr implements Visitable {
     }
 
     @Override
-    public <R, P> R accept(AstVisitor<R, P> vistor, P p) {
+    public <R, P> R accept(AstVisitor<R, P> visitor, P p) {
         throw new UnsupportedOperationException("Base expr is not visitable");
     }
 }
