@@ -1,7 +1,5 @@
 package progLang.ast;
 
-import progLang.type.Type;
-
 import java.util.Objects;
 
 public class BinaryExpr extends Expr {
@@ -47,6 +45,7 @@ public class BinaryExpr extends Expr {
                 "operator=" + operator +
                 ", lhs=" + lhs +
                 ", rhs=" + rhs +
+                ", type=" + type +
                 '}';
     }
 }

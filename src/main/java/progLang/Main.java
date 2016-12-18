@@ -38,6 +38,7 @@ public class Main {
             return compiler.compile(options);
         } catch (Exception ex) {
             log.error("compile.error", ex.getMessage());
+            ex.printStackTrace();
             return Result.ERROR;
         }
     }

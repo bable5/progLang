@@ -1,23 +1,32 @@
 package progLang.type;
 
-import progLang.ast.AstVisitor;
-import progLang.ast.BinaryExpr;
-import progLang.ast.Literal;
-import progLang.ast.Symbol;
+import progLang.ast.*;
 import progLang.util.Context;
+
+import java.util.ArrayList;
 
 import static progLang.type.DefaultTypes.PROG_LANG_INTEGER;
 
 public class Type extends AstVisitor<TypeCheckResult, TypeEnv> {
 
+    public static Type instance(Context context) {
+        Type type = context.get(Type.class);
+        if (type == null) {
+            type = new Type(context);
+            context.put(Type.class, type);
+        }
+        return type;
+    }
+
     private TypeUnifier unifier;
 
-    public Type(Context context) {
-        this.unifier = context.get(TypeUnifier.class);
+    private Type(Context context) {
+        this.unifier = TypeUnifier.instance(context);
     }
 
     @Override
     public TypeCheckResult visitBinaryExpr(BinaryExpr binaryExpr, TypeEnv typeEnv) {
+        System.out.println("Typing " + binaryExpr);
         TypeCheckResult lhsResult = binaryExpr.lhs.accept(this, typeEnv);
         TypeCheckResult rhsResult = binaryExpr.rhs.accept(this, lhsResult.env);
 
@@ -40,5 +49,21 @@ public class Type extends AstVisitor<TypeCheckResult, TypeEnv> {
     @Override
     public TypeCheckResult visitLiteral(Literal exprLiteral, TypeEnv p) {
         return new TypeCheckResult(new Literal(exprLiteral.value, PROG_LANG_INTEGER), p);
+    }
+
+    public CompilationUnit check(CompilationUnit compilationUnit) {
+        ArrayList<Stmt> typedStmts = new ArrayList<>(compilationUnit.stmts.size());
+        TypeEnv env = new TypeEnv();
+
+        for (Stmt s : compilationUnit.stmts) {
+            TypeCheckResult result = s.expr.accept(this, env);
+
+            env = result.env;
+            Stmt typedStmt = new Stmt(result.expr);
+            typedStmts.add(typedStmt);
+        }
+
+
+        return compilationUnit.copy(typedStmts);
     }
 }

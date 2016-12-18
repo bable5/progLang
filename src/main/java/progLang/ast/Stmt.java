@@ -21,4 +21,11 @@ public class Stmt {
     public int hashCode() {
         return Objects.hash(expr);
     }
+
+    @Override
+    public String toString() {
+        return "Stmt{" +
+                "expr=" + expr +
+                '}';
+    }
 }

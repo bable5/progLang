@@ -11,9 +11,7 @@ public class Symbol {
 
     @Override
     public String toString() {
-        return "Symbol{" +
-                "name='" + name + '\'' +
-                '}';
+        return String.format("Symbol(%s)", name);
     }
 
     @Override

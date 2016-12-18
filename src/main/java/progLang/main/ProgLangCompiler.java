@@ -1,14 +1,14 @@
 package progLang.main;
 
+import progLang.ast.CompilationUnit;
+import progLang.progLangParser;
+import progLang.type.Type;
+import progLang.util.Context;
+import progLang.util.Log;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Optional;
-import java.util.function.Function;
-
-import progLang.ast.CompilationUnit;
-import progLang.progLangParser;
-import progLang.util.Context;
-import progLang.util.Log;
 
 public class ProgLangCompiler {
     public static ProgLangCompiler instance(Context context) {
@@ -23,11 +23,13 @@ public class ProgLangCompiler {
     private final Log log;
     private final Parser parser;
     private final ASTExtractor astExtractor;
+    private final Type typer;
 
     protected ProgLangCompiler(Context context) {
         log = Log.instance(context);
         parser = Parser.instance(context);
         astExtractor = ASTExtractor.instance(context);
+        typer = Type.instance(context);
     }
 
     public Result compile(Options options) {
@@ -35,7 +37,8 @@ public class ProgLangCompiler {
         for (String file : options.getFileNames()) {
             File f = new File(file);
             if (f.exists()) {
-                parse(f).map(this::extract);
+                parse(f).map(this::extract)
+                        .map(this::type);
             } else {
                 log.error("file.not.found", f.getName());
             }
@@ -54,8 +57,16 @@ public class ProgLangCompiler {
         }
     }
 
-    protected Optional<CompilationUnit> extract(progLangParser.ProgLangContext context) {
-        return Optional.of(astExtractor.extract(context));
+    protected CompilationUnit extract(progLangParser.ProgLangContext context) {
+        return astExtractor.extract(context);
+    }
+
+    protected CompilationUnit type(CompilationUnit compilationUnit) {
+        CompilationUnit check = typer.check(compilationUnit);
+
+        check.stmts.stream()
+                .forEach(s -> System.out.println(s));
+        return check;
     }
 
     public enum Result {

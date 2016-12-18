@@ -2,7 +2,10 @@ package progLang.type;
 
 import org.junit.Test;
 import org.mockito.Mock;
-import progLang.ast.*;
+import progLang.ast.BinaryExpr;
+import progLang.ast.Literal;
+import progLang.ast.Operator;
+import progLang.ast.Symbol;
 import progLang.testUtils.AbstractProgLangTest;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -20,9 +23,9 @@ public class TypeTest extends AbstractProgLangTest {
     @Override
     protected void postSetup() {
         context.put(TypeUnifier.class, unifier);
-        when(unifier.unify(any(TypeEnv.class), any(Symbol.class), any(Symbol.class))).thenThrow(new UnificationExpection());
+        when(unifier.unify(any(TypeEnv.class), any(Symbol.class), any(Symbol.class))).thenThrow(new UnificationException());
 
-        this.typeChecker = new Type(context);
+        this.typeChecker = Type.instance(context);
     }
 
     @Test
