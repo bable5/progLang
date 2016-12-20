@@ -2,6 +2,7 @@ package progLang.transformers;
 
 import progLang.ast.CompilationUnit;
 import progLang.ast.Stmt;
+import progLang.ast.Symbol;
 import progLang.progLangBaseVisitor;
 import progLang.progLangParser;
 import progLang.util.Context;
@@ -31,6 +32,6 @@ public class CompilationUnitsGenerator extends progLangBaseVisitor<CompilationUn
         List<Stmt> stmts = ctx.stmt().stream()
                 .map(stmt -> stmtAstGenerator.visitStmt(stmt))
                 .collect(Collectors.toList());
-        return new CompilationUnit(stmts);
+        return new CompilationUnit(new Symbol("Generated"), stmts);
     }
 }

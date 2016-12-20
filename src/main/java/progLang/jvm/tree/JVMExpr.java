@@ -1,4 +1,4 @@
 package progLang.jvm.tree;
 
-public interface JVMExpr {
+public interface JVMExpr extends Visitable {
 }

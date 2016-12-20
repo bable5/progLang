@@ -27,6 +27,8 @@ public class AsJVMVisitor extends AstVisitor<JVMExpr, Void> {
         switch (operator) {
             case ARITH_ADD:
                 return JVMOperator.ARITH_ADD;
+            case ARITH_MULT:
+                return JVMOperator.ARITH_MULT;
             default:
                 throw new UnsupportedOperationException(String.format("Unable to map a %s", operator));
         }

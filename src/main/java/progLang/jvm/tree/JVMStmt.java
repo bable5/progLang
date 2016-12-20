@@ -1,4 +1,4 @@
 package progLang.jvm.tree;
 
-public interface JVMStmt {
+public interface JVMStmt extends Visitable {
 }

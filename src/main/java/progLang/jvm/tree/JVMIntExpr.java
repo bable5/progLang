@@ -25,4 +25,9 @@ public class JVMIntExpr implements JVMExpr {
     public int hashCode() {
         return Objects.hash(value);
     }
+
+    @Override
+    public <R, P> R accept(JVMVisitor<R, P> visitor, P p) {
+        return visitor.visitIntExpr(this, p);
+    }
 }

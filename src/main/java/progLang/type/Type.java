@@ -26,7 +26,6 @@ public class Type extends AstVisitor<TypeCheckResult, TypeEnv> {
 
     @Override
     public TypeCheckResult visitBinaryExpr(BinaryExpr binaryExpr, TypeEnv typeEnv) {
-        System.out.println("Typing " + binaryExpr);
         TypeCheckResult lhsResult = binaryExpr.lhs.accept(this, typeEnv);
         TypeCheckResult rhsResult = binaryExpr.rhs.accept(this, lhsResult.env);
 

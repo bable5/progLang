@@ -9,10 +9,12 @@ public class JVMMethod {
     public final Type type;
     public final List<?> formalArguments;
     public final List<JVMStmt> body;
+    public final String name;
 
-    public JVMMethod(List<Flag> flags, Type type, List<?> formalArguments, List<JVMStmt> body) {
+    public JVMMethod(List<Flag> flags, Type type, String name, List<?> formalArguments, List<JVMStmt> body) {
         this.flags = unmodifiableList(flags);
         this.type = type;
+        this.name = name;
         this.formalArguments = unmodifiableList(formalArguments);
         this.body = unmodifiableList(body);
     }

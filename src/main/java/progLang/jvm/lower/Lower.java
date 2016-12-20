@@ -48,7 +48,7 @@ public class Lower {
         List<Flag> flags = Arrays.asList(Flag.FLAG_PUBLIC);
         Type type = Type.INT_TYPE;
 
-        return new JVMMethod(flags, type, emptyList(), toJvmStmts(body));
+        return new JVMMethod(flags, type, "generated$default", emptyList(), toJvmStmts(body));
     }
 
     protected List<JVMStmt> toJvmStmts(List<Stmt> body) {

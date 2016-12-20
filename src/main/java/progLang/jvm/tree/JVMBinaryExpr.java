@@ -40,4 +40,9 @@ public class JVMBinaryExpr implements JVMExpr {
     public int hashCode() {
         return Objects.hash(operator, lhs, rhs, type);
     }
+
+    @Override
+    public <R, P> R accept(JVMVisitor<R, P> visitor, P p) {
+        return visitor.visitBinaryExpr(this, p);
+    }
 }

@@ -1,6 +1,10 @@
 package progLang.main;
 
+import org.apache.bcel.classfile.JavaClass;
 import progLang.ast.CompilationUnit;
+import progLang.jvm.bytecode.Generator;
+import progLang.jvm.lower.Lower;
+import progLang.jvm.tree.JVMCompilationUnit;
 import progLang.progLangParser;
 import progLang.type.Type;
 import progLang.util.Context;
@@ -24,12 +28,17 @@ public class ProgLangCompiler {
     private final Parser parser;
     private final ASTExtractor astExtractor;
     private final Type typer;
+    private final Lower lower;
+    private final Generator gen;
+
 
     private ProgLangCompiler(Context context) {
         log = Log.instance(context);
         parser = Parser.instance(context);
         astExtractor = ASTExtractor.instance(context);
         typer = Type.instance(context);
+        lower = Lower.instance(context);
+        gen = Generator.instance(context);
     }
 
     public Result compile(Options options) {
@@ -38,7 +47,10 @@ public class ProgLangCompiler {
             File f = new File(file);
             if (f.exists()) {
                 parse(f).map(this::extract)
-                        .map(this::type);
+                        .map(this::type)
+                        .map(this::lower)
+                        .map(this::emit)
+                        .map(this::write);
             } else {
                 log.error("file.not.found", f.getName());
             }
@@ -61,11 +73,26 @@ public class ProgLangCompiler {
         return astExtractor.extract(context);
     }
 
-    protected CompilationUnit type(CompilationUnit compilationUnit) {
-        CompilationUnit check = typer.check(compilationUnit);
+    private CompilationUnit type(CompilationUnit compilationUnit) {
+        return typer.check(compilationUnit);
+    }
 
-        check.stmts.forEach(System.out::println);
-        return check;
+    private JVMCompilationUnit lower(CompilationUnit compilationUnit) {
+        return lower.apply(compilationUnit);
+    }
+
+    private JavaClass emit(JVMCompilationUnit compilationUnit) {
+        return gen.generate(compilationUnit);
+    }
+
+    private String write(JavaClass clazz) {
+        File f = new File(clazz.getFileName());
+        try {
+            clazz.dump(f);
+        } catch (IOException e) {
+            throw new RuntimeException("Unable to write " + f.getName());
+        }
+        return clazz.getClassName();
     }
 
     public enum Result {

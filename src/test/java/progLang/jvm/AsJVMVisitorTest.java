@@ -26,7 +26,7 @@ public class AsJVMVisitorTest extends AbstractProgLangTest {
     }
 
     @Test
-    public void visitLiteral() throws Exception {
+    public void visitLiteral() {
         Expr expr = givenIntLiteral(1);
 
         JVMIntExpr visited = (JVMIntExpr) expr.accept(visitor, null);
@@ -36,8 +36,8 @@ public class AsJVMVisitorTest extends AbstractProgLangTest {
 
 
     @Test
-    public void visitBinaryExpr() throws Exception {
-        Expr expr = givenArithExpr(givenIntLiteral(1), givenIntLiteral(3));
+    public void visitBinaryExpr() {
+        Expr expr = givenArithAddExpr(givenIntLiteral(1), givenIntLiteral(3));
 
         JVMBinaryExpr visited = (JVMBinaryExpr) (expr.accept(visitor, null));
         assertThat(visited.operator, is(JVMOperator.ARITH_ADD));
@@ -46,8 +46,23 @@ public class AsJVMVisitorTest extends AbstractProgLangTest {
         assertThat(visited.rhs, is(new JVMIntExpr(3)));
     }
 
-    private Expr givenArithExpr(Expr lhs, Expr rhs) {
+    @Test
+    public void visitMultiplyExpr() {
+        Expr expr = givenArithMultExpr(givenIntLiteral(1), givenIntLiteral(3));
+
+        JVMBinaryExpr visited = (JVMBinaryExpr) (expr.accept(visitor, null));
+        assertThat(visited.operator, is(JVMOperator.ARITH_MULT));
+        assertThat(visited.type, is(Type.INT_TYPE));
+        assertThat(visited.lhs, is(new JVMIntExpr(1)));
+        assertThat(visited.rhs, is(new JVMIntExpr(3)));
+    }
+
+    private Expr givenArithAddExpr(Expr lhs, Expr rhs) {
         return new BinaryExpr(Operator.ARITH_ADD, lhs, rhs, PROG_LANG_INTEGER);
+    }
+
+    private Expr givenArithMultExpr(Expr lhs, Expr rhs) {
+        return new BinaryExpr(Operator.ARITH_MULT, lhs, rhs, PROG_LANG_INTEGER);
     }
 
     private Literal givenIntLiteral(int i) {

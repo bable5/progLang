@@ -25,4 +25,9 @@ public class JVMReturnStmt implements JVMStmt {
     public int hashCode() {
         return Objects.hash(expr);
     }
+
+    @Override
+    public <R, P> R accept(JVMVisitor<R, P> visitor, P p) {
+        return visitor.visitReturnStmt(this, p);
+    }
 }
