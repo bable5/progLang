@@ -2,6 +2,7 @@ package progLang.jvm.bytecode;
 
 import org.apache.bcel.classfile.JavaClass;
 import org.apache.bcel.generic.*;
+import org.apache.commons.lang3.StringUtils;
 import progLang.jvm.tree.JVMClass;
 import progLang.jvm.tree.JVMCompilationUnit;
 import progLang.jvm.tree.JVMMethod;
@@ -28,7 +29,7 @@ public class Generator {
 
 
     public JavaClass generate(JVMCompilationUnit compilationUnit) {
-        ClassGen cg = new ClassGen(compilationUnit.compilationUnitName, "java.lang.Object", compilationUnit.compilationUnitName + ".class", accessFlags(compilationUnit), null);
+        ClassGen cg = new ClassGen(fullyQualifiedName(compilationUnit), "java.lang.Object", compilationUnit.compilationUnitName + ".class", accessFlags(compilationUnit), null);
 
         if (compilationUnit instanceof JVMClass) {
             return generateClass(cg, (JVMClass) compilationUnit);
@@ -37,11 +38,22 @@ public class Generator {
         }
     }
 
+    private String fullyQualifiedName(JVMCompilationUnit compilationUnit) {
+        StringBuilder sb = new StringBuilder();
+
+        if (StringUtils.isNoneEmpty(compilationUnit.packageName)) {
+            sb.append(compilationUnit.packageName);
+            sb.append(".");
+        }
+
+        sb.append(compilationUnit.compilationUnitName);
+        return sb.toString();
+    }
+
     private JavaClass generateClass(ClassGen cg, JVMClass clazz) {
         generateConstructor(cg, clazz);
 
         clazz.methods.forEach(m -> {
-            System.out.println("Generating: " + m);
             generateMethod(m, cg);
         });
 
@@ -49,7 +61,6 @@ public class Generator {
     }
 
     private void generateConstructor(ClassGen cg, JVMClass clazz) {
-        System.out.println("Generating a default constructor");
         cg.addEmptyConstructor(ACC_PUBLIC);
     }
 
